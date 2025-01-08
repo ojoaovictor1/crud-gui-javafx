@@ -1,6 +1,5 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 
 public class ConexaoDB {
@@ -10,9 +9,10 @@ public class ConexaoDB {
         try {
             return DriverManager.getConnection(URL_JDBC_PADRAO);
         } catch (SQLException e){
-            System.err.println("Erro ao conectar no bando de dados: " + e.getMessage());
+            System.err.println("Erro ao conectar no bando de dadoos: " + e.getMessage());
             return null;
         }
+
     }
 
     public static Connection conectarGenerico(String url, String usuario, String senha){

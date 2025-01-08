@@ -44,7 +44,7 @@ public class ProdutoDAO {
             try(ResultSet rs = stmt.executeQuery()){
                 if(rs.next()){
                     Produto produto = new Produto();
-                    produto.setId(rs.getInt("id_produto"));
+                    produto.setId(rs.getInt("id_produtos"));
                     produto.setNome(rs.getString("nome_produto"));
                     produto.setQuantidade(rs.getInt("quantidade"));
                     produto.setPreco(rs.getDouble("preco"));
@@ -74,7 +74,7 @@ public class ProdutoDAO {
     }
 
     public void excluir(int id){
-        String sql = "DELETE FROM produtos WHERE id_produto = ?";
+        String sql = "DELETE FROM produtos WHERE id_produtos = ?";
         try(PreparedStatement stmt = CONEXAODB.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeQuery();
@@ -90,7 +90,7 @@ public class ProdutoDAO {
             ResultSet rs = stmt.executeQuery()) {
             while(rs.next()){
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("id_produto"));
+                produto.setId(rs.getInt("id_produtos"));
                 produto.setNome(rs.getString("nome_produto"));
                 produto.setQuantidade(rs.getInt("quantidade"));
                 produto.setPreco(rs.getDouble("preco"));
