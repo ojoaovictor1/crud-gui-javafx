@@ -1,29 +1,27 @@
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        try(Connection conexao = ConexaoDB.conectar()){
+            ProdutoDAO produtoDAO = new ProdutoDAO(conexao);
 
-        try(Connection conexao = ConexaoDB.conectar();
-        Statement stmt = conexao.createStatement()){
-            String comandoSql = "CREATE TABLE produtos (" +
-                    "id_produtos INTEGER PRIMARY KEY," +
-                    "nome_produto TEXT NOT NULL," +
-                    "quantidade INTEGER," +
-                    "preco REAL," +
-                    "status TEXT" +
-                    ");";
-            System.out.println(comandoSql);
+            mostrarProdutos(produtoDAO);
 
-            stmt.execute(comandoSql);
-            System.out.println("Tabela produtos criada com sucesso!");
+            Produto novoProduto1 = new Produto("Notebook", 10, 1999.99, "Em estoque");
+            Produto novoProduto2 = new Produto("Smartphone", 20, 1499.99, "Extoque baixo");
+            Produto novoProduto3 = new Produto("Table", 15, 799.99, "Extoque baixo");
 
-        } catch(SQLException e){
-            System.err.println("Erro ao criar a tabela: " + e.getMessage());
-            e.printStackTrace();
+            produtoDAO.inserir(novoProduto1);
+            produtoDAO.inserir(novoProduto2);
+            produtoDAO.inserir(novoProduto3);
+
+            mostrarProdutos(produtoDAO);
+
+
         }
+
 
     }
 }
