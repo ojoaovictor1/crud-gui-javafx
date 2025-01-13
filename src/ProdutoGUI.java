@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -40,7 +41,7 @@ public class ProdutoGUI extends Application{
 
         HBox nomeProdutoBox = new HBox();
         nomeProdutoBox.setSpacing(10);
-        Label nomeLabel = new Label("Produtos");
+        Label nomeLabel = new Label("Produto");
         nomeInput = new TextField();
         nomeProdutoBox.getChildren().addAll(nomeLabel, nomeInput);
 
@@ -102,30 +103,58 @@ public class ProdutoGUI extends Application{
         Button clearButton = new Button("Limpar");
         clearButton.setOnAction(e -> limparCampos());
 
+        tableView = new TableView<>();
+        tableView.setItems(produtos);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        List<TableColumn<Produto, ?>> columns = List.of(
+                criarColuna("ID", "id"),
+                criarColuna("Produto", "nome"),
+                criarColuna("Quantidade", "quantidade"),
+                criarColuna("Preço", "preco"),
+                criarColuna("Status", "status")
+        );
+        tableView.getColumns().addAll(columns);
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) ->{
+            if (newSelection != null){
+                nomeInput.setText(newSelection.getNome());
+                quantidadeInput.setText(String.valueOf(newSelection.getQuantidade()));
+                precoInput.setText(String.valueOf(newSelection.getPreco()));
+                statusComboBox.setValue(newSelection.getStatus());
+            }
+        });
+
+        HBox buttonBox = new HBox();
+        buttonBox.setSpacing(10);
+        buttonBox.getChildren().addAll(addButton, attButton, deleteButton, clearButton);
+
+        vbox.getChildren().addAll(nomeProdutoBox, quantidadeBox, precoBox, statusBox, buttonBox, tableView);
+
+        Scene scene = new Scene(vbox, 800, 600);
+        //scene.getStylesheets().add("styles-produtos.css");
+
+        palco.setScene(scene);
+        palco.show();
     }
 
+    @Override
+    public void stop(){
+        try{
+            conexaoDB.close();
+        } catch(SQLException e){
+            System.out.println("Erro ao fechar conexão" + e.getMessage());
+        }
+    }
 
+    private void limparCampos(){
+        nomeInput.clear();
+        quantidadeInput.clear();
+        precoInput.clear();
+        statusComboBox.setValue(null);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private TableColumn<Produto, String> criarColuna(String title, String property){
+        TableColumn<Produto, String> col = new TableColumn<>(title);
+        col.setCellValueFactory(new PropertyValueFactory<>(property));
+        return col;
+    }
 }

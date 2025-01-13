@@ -9,13 +9,7 @@ public class Main {
 
             mostrarProdutos(produtoDAO);
 
-            Produto novoProduto1 = new Produto("Notebook", 10, 1999.99, "Em estoque");
-            Produto novoProduto2 = new Produto("Smartphone", 20, 1499.99, "Extoque baixo");
-            Produto novoProduto3 = new Produto("Table", 15, 799.99, "Extoque baixo");
 
-            produtoDAO.inserir(novoProduto1);
-            produtoDAO.inserir(novoProduto2);
-            produtoDAO.inserir(novoProduto3);
 
             mostrarProdutos(produtoDAO);
 
