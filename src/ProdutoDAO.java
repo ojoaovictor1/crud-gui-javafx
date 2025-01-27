@@ -60,7 +60,7 @@ public class ProdutoDAO {
 
     public void atualizar(Produto produto){
 
-        String sql = "UPDATE produtos SET nome_produto = ?, quantidade = ?, preco = ?, status = ? WHERE id_produto = ?";
+        String sql = "UPDATE produtos SET nome_produto = ?, quantidade = ?, preco = ?, status = ? WHERE id_produtos = ?";
         try (PreparedStatement stmt = CONEXAODB.prepareStatement(sql)){
             stmt.setString(1, produto.getNome());
             stmt.setInt(2, produto.getQuantidade());
@@ -77,7 +77,7 @@ public class ProdutoDAO {
         String sql = "DELETE FROM produtos WHERE id_produtos = ?";
         try(PreparedStatement stmt = CONEXAODB.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }catch(SQLException e){
             System.err.println("Erro ao excluir produto: " + e.getMessage());
         }
